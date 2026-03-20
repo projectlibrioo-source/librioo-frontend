@@ -21,7 +21,7 @@ const AdminDashboard = () => {
   // ---------------- LOAD DASHBOARD STATS ----------------
   useEffect(() => {
 
-    axios.get("http://localhost:8080/api/dashboard")
+    axios.get("https://librioo-backend-production.up.railway.app/api/dashboard")
       .then(res => {
 
         const data = res.data;
@@ -43,7 +43,7 @@ const AdminDashboard = () => {
   // ---------------- LOAD ROBOTS (SPRING BOOT API) ----------------
   useEffect(() => {
 
-    axios.get("http://localhost:8080/api/overview")
+    axios.get("https://librioo-backend-production.up.railway.app/api/overview")
       .then(res => {
 
         // Map backend data → UI format
