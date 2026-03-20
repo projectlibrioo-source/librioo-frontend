@@ -1,5 +1,5 @@
 import React from 'react';
-import logolib31 from "../../assets/logolib3-1.png";
+import logolib31 from "../../assets/logoLib3-1.png";
 
 export default function RobotLayout({ children }) {
   return (
