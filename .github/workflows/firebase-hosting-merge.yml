@@ -18,11 +18,9 @@ jobs:
 
       - name: Install dependencies
         run: npm install
-        working-directory: librioo-system/frontend
 
       - name: Build
         run: npm run build
-        working-directory: librioo-system/frontend
 
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:

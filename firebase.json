@@ -1,6 +1,6 @@
 {
   "hosting": {
-    "public": " librioo-system/frontend/build",
+    "public": "dist",
     "ignore": [
       "firebase.json",
       "**/.*",
