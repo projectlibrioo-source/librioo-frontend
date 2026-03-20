@@ -13,7 +13,7 @@ const Transactions = () => {
     useEffect(() => {
         const fetchTransactions = async () => {
             try {
-                const response = await axios.get('http://localhost:8080/api/transactions');
+                const response = await axios.get('https://librioo-backend-production.up.railway.app/api/transactions');
                 const data = response.data;
                 const formatted = data.map(tx => ({
                     id: tx.transactionId || tx.id || 'N/A',

@@ -11,7 +11,7 @@ const Users = () => {
         const fetchUsers = async () => {
             try {
                 // Fetch from a general users endpoint
-                const response = await axios.get('http://localhost:8080/api/users');
+                const response = await axios.get('https://librioo-backend-production.up.railway.app/api/users');
                 
                 const formattedUsers = response.data.map(user => ({
                     id: user.libraryID || user.guestID || user.id || 'N/A',

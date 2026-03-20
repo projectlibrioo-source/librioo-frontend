@@ -16,7 +16,7 @@ const RobotStatus = () => {
     const fetchRobots = async () => {
         try {
             setLoading(true);
-            const res = await axios.get('http://localhost:8080/api/robots/all');
+            const res = await axios.get('https://librioo-backend-production.up.railway.app/api/robots/all');
             
             // Map the database robot entity to the UI expectation
             // Since physical telemetry (battery, shelf) doesn't exist in MySQL, 

@@ -58,8 +58,8 @@ const ManageUsers = () => {
         try {
             const endpoint =
                 userRole === 'MEMBER'
-                    ? 'http://localhost:8080/api/addmember'
-                    : 'http://localhost:8080/api/addguest';
+                    ? 'https://librioo-backend-production.up.railway.app/api/addmember'
+                    : 'https://librioo-backend-production.up.railway.app/api/addguest';
 
             const payload =
                 userRole === 'MEMBER'
@@ -125,7 +125,7 @@ const ManageUsers = () => {
 
         // Try Member first
         try {
-            const memberRes = await axios.get('http://localhost:8080/api/getallmembers', {
+            const memberRes = await axios.get('https://librioo-backend-production.up.railway.app/api/getallmembers', {
                 params: { memberid: parsedId }
             });
 
@@ -148,7 +148,7 @@ const ManageUsers = () => {
 
         // Try Guest
         try {
-            const guestRes = await axios.get('http://localhost:8080/api/getallguests', {
+            const guestRes = await axios.get('https://librioo-backend-production.up.railway.app/api/getallguests', {
                 params: { guestid: parsedId }
             });
 
@@ -183,8 +183,8 @@ const ManageUsers = () => {
         try {
             const endpoint =
                 updateForm.role === 'Member'
-                    ? 'http://localhost:8080/api/updatemember'
-                    : 'http://localhost:8080/api/updateguest';
+                    ? 'https://librioo-backend-production.up.railway.app/api/updatemember'
+                    : 'https://librioo-backend-production.up.railway.app/api/updateguest';
 
             const payload =
                 updateForm.role === 'Member'
@@ -227,7 +227,7 @@ const ManageUsers = () => {
 
         // Try Member first
         try {
-            const memberRes = await axios.get('http://localhost:8080/api/getallmembers', {
+            const memberRes = await axios.get('https://librioo-backend-production.up.railway.app/api/getallmembers', {
                 params: { memberid: parsedId }
             });
 
@@ -245,7 +245,7 @@ const ManageUsers = () => {
 
         // Try Guest
         try {
-            const guestRes = await axios.get('http://localhost:8080/api/getallguests', {
+            const guestRes = await axios.get('https://librioo-backend-production.up.railway.app/api/getallguests', {
                 params: { guestid: parsedId }
             });
 
@@ -281,8 +281,8 @@ const ManageUsers = () => {
             const isGuest = deleteUser.role === 'Guest';
 
             const endpoint = isGuest
-                ? 'http://localhost:8080/api/deleteguest'
-                : 'http://localhost:8080/api/deletemember';
+                ? 'https://librioo-backend-production.up.railway.app/api/deleteguest'
+                : 'https://librioo-backend-production.up.railway.app/api/deletemember';
 
             const params = isGuest
                 ? { guestid: deleteUser.id }
