@@ -21,7 +21,7 @@ const Header = () => {
 
     const fetchNotifications = async () => {
         try {
-            const res = await axios.get('http://localhost:8080/api/notifications');
+            const res = await axios.get('https://librioo-backend-production.up.railway.app/api/notifications');
             setNotifications(res.data);
         } catch (error) {
             console.error('Failed to fetch notifications in Header:', error);
