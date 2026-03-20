@@ -16,7 +16,7 @@ const Contact = () => {
     const fetchAdmins = async () => {
         try {
             setLoading(true);
-            const res = await axios.get('http://localhost:8080/api/settings/admins');
+            const res = await axios.get('https://librioo-backend-production.up.railway.app/api/settings/admins');
             
             // Map DB entity (Admin.java: adminId, adminUsername, adminRole) to UI structure
             const mappedAdmins = (res.data || []).map(admin => {

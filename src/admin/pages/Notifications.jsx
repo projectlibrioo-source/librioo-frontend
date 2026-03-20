@@ -17,7 +17,7 @@ const Notifications = () => {
     const fetchNotifications = async () => {
         try {
             setLoading(true);
-            const res = await axios.get('http://localhost:8080/api/notifications');
+            const res = await axios.get('https://librioo-backend-production.up.railway.app/api/notifications');
             // Sort by ID descending so newest are on top
             const sorted = (res.data || []).sort((a,b) => b.id - a.id);
             setNotifications(sorted);
@@ -30,7 +30,7 @@ const Notifications = () => {
 
     const markAllAsRead = async () => {
         try {
-            await axios.put('http://localhost:8080/api/notifications/read-all');
+            await axios.put('https://librioo-backend-production.up.railway.app/api/notifications/read-all');
             setNotifications(notifications.map(n => ({...n, read: true})));
         } catch (error) {
             console.error('Failed to mark all as read', error);
@@ -39,7 +39,7 @@ const Notifications = () => {
 
     const sendTestAlert = async () => {
         try {
-            await axios.post('http://localhost:8080/api/notifications/test');
+            await axios.post('https://librioo-backend-production.up.railway.app/api/notifications/test');
             fetchNotifications();
         } catch (error) {
             console.error('Failed to send test alert', error);

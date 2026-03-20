@@ -51,7 +51,7 @@ const ManageTransactions = () => {
         
         try {
             // Try Member
-            const res = await axios.get(`http://localhost:8080/api/getallmembers?memberid=${parsedId}`);
+            const res = await axios.get(`https://librioo-backend-production.up.railway.app/api/getallmembers?memberid=${parsedId}`);
             if (res.data) {
                 setBorrowData(prev => ({ ...prev, userId: parsedId, patronType: res.data.status || 'Member', userName: res.data.fullName }));
                 return;
@@ -62,7 +62,7 @@ const ManageTransactions = () => {
 
         try {
             // Try Guest
-            const res = await axios.get(`http://localhost:8080/api/getallguests?guestid=${parsedId}`);
+            const res = await axios.get(`https://librioo-backend-production.up.railway.app/api/getallguests?guestid=${parsedId}`);
             if (res.data) {
                 setBorrowData(prev => ({ ...prev, userId: parsedId, patronType: 'Guest', userName: res.data.fullName }));
                 return;
@@ -79,7 +79,7 @@ const ManageTransactions = () => {
         const parsedId = parseInt(borrowSearchBookId, 10);
 
         try {
-            const res = await axios.get(`http://localhost:8080/api/getallbooks?bookid=${parsedId}`);
+            const res = await axios.get(`https://librioo-backend-production.up.railway.app/api/getallbooks?bookid=${parsedId}`);
             if (res.data) {
                 if (!res.data.availability) {
                     alert('Book is currently unavailable!');
@@ -110,7 +110,7 @@ const ManageTransactions = () => {
         };
 
         try {
-            const res = await axios.post('http://localhost:8080/api/borrowbook', payload);
+            const res = await axios.post('https://librioo-backend-production.up.railway.app/api/borrowbook', payload);
             if (res.status === 200 || res.status === 201) {
                 alert('Book borrowed successfully!');
                 clearBorrowForm();
@@ -146,12 +146,12 @@ const ManageTransactions = () => {
             // 1. Fetch Book Details
             let bookTitle = '';
             try {
-                const bookRes = await axios.get(`http://localhost:8080/api/getallbooks?bookid=${parsedBookId}`);
+                const bookRes = await axios.get(`https://librioo-backend-production.up.railway.app/api/getallbooks?bookid=${parsedBookId}`);
                 if (bookRes.data && bookRes.data.title) bookTitle = bookRes.data.title;
             } catch(e) { console.error("Could not fetch book title"); }
 
             // 2. Fetch Transaction
-            const transRes = await axios.get(`http://localhost:8080/api/getusers?bookid=${parsedBookId}`);
+            const transRes = await axios.get(`https://librioo-backend-production.up.railway.app/api/getusers?bookid=${parsedBookId}`);
             if (!transRes.data) throw new Error("No transaction found");
 
             const txn = transRes.data;
@@ -167,11 +167,11 @@ const ManageTransactions = () => {
             // 3. Fetch User Details for Name display
             let userName = 'Unknown';
             try {
-                 const mRes = await axios.get(`http://localhost:8080/api/getallmembers?memberid=${txn.libraryId}`);
+                 const mRes = await axios.get(`https://librioo-backend-production.up.railway.app/api/getallmembers?memberid=${txn.libraryId}`);
                  if (mRes.data) userName = mRes.data.fullName;
             } catch(e){
                  try {
-                     const gRes = await axios.get(`http://localhost:8080/api/getallguests?guestid=${txn.libraryId}`);
+                     const gRes = await axios.get(`https://librioo-backend-production.up.railway.app/api/getallguests?guestid=${txn.libraryId}`);
                      if (gRes.data) userName = gRes.data.fullName;
                  } catch(err){}
             }
@@ -180,7 +180,7 @@ const ManageTransactions = () => {
             let fineTotal = 0;
             try {
                 const dto = { libraryId: txn.libraryId, bookId: txn.bookId, category: txn.category };
-                const fineRes = await axios.post('http://localhost:8080/api/getfines', dto);
+                const fineRes = await axios.post('https://librioo-backend-production.up.railway.app/api/getfines', dto);
                 if (fineRes.data) fineTotal = fineRes.data;
             } catch (err) {
                 console.error("Fines calculation failed", err);
@@ -220,7 +220,7 @@ const ManageTransactions = () => {
         };
 
         try {
-            const res = await axios.put('http://localhost:8080/api/confirmreturn', dto);
+            const res = await axios.put('https://librioo-backend-production.up.railway.app/api/confirmreturn', dto);
             if (res.status === 200 || res.status === 201) {
                 alert(`Return processed successfully! Fines collected: Rs. ${returnData.fineTotal}`);
                 clearReturnForm();

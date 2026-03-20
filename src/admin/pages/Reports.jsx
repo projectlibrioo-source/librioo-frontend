@@ -23,7 +23,7 @@ const Reports = () => {
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
-        axios.get('http://localhost:8080/api/admin/reports/dashboard')
+        axios.get('https://librioo-backend-production.up.railway.app/api/admin/reports/dashboard')
             .then((res) => {
                 const data = res.data;
 
@@ -59,7 +59,7 @@ const Reports = () => {
             };
 
             const res = await axios.post(
-                'http://localhost:8080/api/admin/reports/generate',
+                'https://librioo-backend-production.up.railway.app/api/admin/reports/generate',
                 payload
             );
 

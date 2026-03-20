@@ -26,7 +26,7 @@ const Settings = () => {
 
     const fetchFines = async () => {
         try {
-            const res = await axios.get('http://localhost:8080/api/settings/fines');
+            const res = await axios.get('https://librioo-backend-production.up.railway.app/api/settings/fines');
             setFinesList(res.data);
             if (res.data.length > 0) {
                 setEnableFines(true);
@@ -45,7 +45,7 @@ const Settings = () => {
         };
 
         try {
-            await axios.post('http://localhost:8080/api/settings/fines', payload);
+            await axios.post('https://librioo-backend-production.up.railway.app/api/settings/fines', payload);
             alert(`${categoryName} category rules updated successfully!`);
             fetchFines(); // Refresh table
         } catch (err) {
@@ -69,7 +69,7 @@ const Settings = () => {
         };
 
         try {
-            await axios.post('http://localhost:8080/api/settings/admins', payload);
+            await axios.post('https://librioo-backend-production.up.railway.app/api/settings/admins', payload);
             alert(`Admin ${adminEmail} created successfully as ${adminRole}!`);
             setAdminName('');
             setAdminEmail('');

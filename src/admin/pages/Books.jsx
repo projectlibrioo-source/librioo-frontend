@@ -11,7 +11,7 @@ const Books = () => {
         const fetchBooks = async () => {
             try {
                 // Default endpoint for books over REST
-                const response = await axios.get('http://localhost:8080/api/books');
+                const response = await axios.get('https://librioo-backend-production.up.railway.app/api/books');
                 
                 const formattedBooks = response.data.map(book => ({
                     id: book.bookId,

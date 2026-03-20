@@ -38,7 +38,7 @@ const ManageRobot = () => {
 
     const fetchAllRobots = async () => {
         try {
-            const res = await axios.get("http://localhost:8080/api/robots/all");
+            const res = await axios.get("https://librioo-backend-production.up.railway.app/api/robots/all");
             setRobots(res.data);
         } catch (err) {
             console.error("Error fetching robots:", err);
@@ -56,7 +56,7 @@ const ManageRobot = () => {
                 status: 'ACTIVE'
             };
             const res = await axios.post(
-                "http://localhost:8080/api/robots/add",
+                "https://librioo-backend-production.up.railway.app/api/robots/add",
                 robotData,
                 {
                     headers: {
@@ -90,7 +90,7 @@ const ManageRobot = () => {
             return;
         }
         try {
-            const res = await axios.get(`http://localhost:8080/api/robots/${searchId}`);
+            const res = await axios.get(`https://librioo-backend-production.up.railway.app/api/robots/${searchId}`);
             setUpdateRobot({
                 robotId: res.data.robotID,
                 robotName: res.data.robotName,
@@ -108,7 +108,7 @@ const ManageRobot = () => {
         e.preventDefault();
         try {
             const res = await axios.put(
-                `http://localhost:8080/api/robots/${updateRobot.robotId}`,
+                `https://librioo-backend-production.up.railway.app/api/robots/${updateRobot.robotId}`,
                 {
                     robotID: updateRobot.robotId,
                     robotName: updateRobot.robotName,
@@ -137,11 +137,11 @@ const ManageRobot = () => {
         }
         try {
             // First verify robot exists
-            await axios.get(`http://localhost:8080/api/robots/${maintenanceSearchId}`);
+            await axios.get(`https://librioo-backend-production.up.railway.app/api/robots/${maintenanceSearchId}`);
 
             // Then load maintenance history (newest first)
             const histRes = await axios.get(
-                `http://localhost:8080/api/robots/${maintenanceSearchId}/maintenance`,
+                `https://librioo-backend-production.up.railway.app/api/robots/${maintenanceSearchId}/maintenance`,
                 { validateStatus: () => true }
             );
 
@@ -167,7 +167,7 @@ const ManageRobot = () => {
         e.preventDefault();
         try {
             const res = await axios.put(
-                `http://localhost:8080/api/robots/${maintenanceData.robotId}/maintenance`,
+                `https://librioo-backend-production.up.railway.app/api/robots/${maintenanceData.robotId}/maintenance`,
                 {
                     lastServiceDate: maintenanceData.lastServiceDate,
                     nextServiceDate: maintenanceData.nextServiceDate,
@@ -212,7 +212,7 @@ const ManageRobot = () => {
             return;
         }
         try {
-            const res = await axios.delete(`http://localhost:8080/api/robots/${deleteSearchId}`);
+            const res = await axios.delete(`https://librioo-backend-production.up.railway.app/api/robots/${deleteSearchId}`);
             alert(res.data.message);
             setDeleteSearchId('');
             fetchAllRobots();

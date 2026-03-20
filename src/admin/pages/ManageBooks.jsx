@@ -27,7 +27,7 @@ const ManageBooks = () => {
             });
             formData.append("book", bookJson);
             
-            await axios.post('http://localhost:8080/api/addbook', formData, { headers: { 'Content-Type': 'multipart/form-data' } });
+            await axios.post('https://librioo-backend-production.up.railway.app/api/addbook', formData, { headers: { 'Content-Type': 'multipart/form-data' } });
             alert('Book added successfully');
             setAddForm({ bookID: '', title: '', isbn: '', author: '', category: '', shelfNumber: '', available: true, image: null });
         } catch (err) {
@@ -37,7 +37,7 @@ const ManageBooks = () => {
 
     const handleUpdateSearch = async () => {
         try {
-            const res = await axios.get(`http://localhost:8080/api/getallbooks?bookid=${updateSearchId}`);
+            const res = await axios.get(`https://librioo-backend-production.up.railway.app/api/getallbooks?bookid=${updateSearchId}`);
             const data = res.data;
             setUpdateForm({ bookID: data.bookId, title: data.title, isbn: data.ISBN, author: data.author, category: data.category, shelfNumber: data.shelfNumber, available: data.availability, image: null });
         } catch (err) {
@@ -51,7 +51,7 @@ const ManageBooks = () => {
             const payload = {
                 bookId: parseInt(updateForm.bookID), title: updateForm.title, ISBN: parseInt(updateForm.isbn), author: updateForm.author, category: updateForm.category, shelfNumber: parseInt(updateForm.shelfNumber), availability: updateForm.available
             };
-            await axios.put('http://localhost:8080/api/updatebook', payload);
+            await axios.put('https://librioo-backend-production.up.railway.app/api/updatebook', payload);
             alert('Book updated successfully');
         } catch (err) {
             console.error(err); alert('Failed to update book');
@@ -60,7 +60,7 @@ const ManageBooks = () => {
 
     const handleDeleteSearch = async () => {
         try {
-            const res = await axios.get(`http://localhost:8080/api/getallbooks?bookid=${deleteSearchId}`);
+            const res = await axios.get(`https://librioo-backend-production.up.railway.app/api/getallbooks?bookid=${deleteSearchId}`);
             setDeleteBookInfo(res.data);
         } catch (err) {
             console.error(err); alert('Book not found');
@@ -71,7 +71,7 @@ const ManageBooks = () => {
         e.preventDefault();
         if (!deleteBookInfo) return;
         try {
-            await axios.delete(`http://localhost:8080/api/deletebook?bookid=${deleteSearchId}`);
+            await axios.delete(`https://librioo-backend-production.up.railway.app/api/deletebook?bookid=${deleteSearchId}`);
             alert('Book deleted successfully');
             setDeleteBookInfo(null); setDeleteSearchId('');
         } catch (err) {
