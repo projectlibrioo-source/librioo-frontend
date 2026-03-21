@@ -4,7 +4,7 @@ import logolib31 from "../../assets/logoLib3-1.png";
 export default function RobotLayout({ children }) {
   return (
     <div 
-      className="flex flex-col w-full min-h-screen overflow-hidden"
+      className="flex flex-col w-full h-screen overflow-hidden"
       style={{
         // A lighter, more modern blue/cyan gradient
         background: 'linear-gradient(135deg, #6b8cce 0%, #8cb0c9 50%, #c4e0e5 100%)',
@@ -31,7 +31,7 @@ export default function RobotLayout({ children }) {
       </header>
 
       {/* Main Content Area */}
-      <main className="relative flex flex-col flex-1 w-full overflow-hidden">
+      <main className="relative flex flex-col flex-1 w-full overflow-y-auto">
         {children}
       </main>
     </div>
