@@ -12,7 +12,7 @@ const TIMEOUT_SECONDS = 60;
 const BorrowSearchPage = () => {
 
 
-const BASE_URL = "http://localhost:8080";
+const BASE_URL = "https://librioo-backend-production.up.railway.app";
 
 const borrowBook = async (transactionData) => {
   const response = await axios.post(`${BASE_URL}/borrowrobot`, transactionData);
@@ -90,11 +90,11 @@ const handleBorrow = async () => {
   try {
     const libraryId = localStorage.getItem("libraryId");
 
-    if (!libraryId) {
-      alert("Session expired. Please login again.");
-      navigate("/robot/login");
-      return;
-    }
+    // if (!libraryId) {
+    //   alert("Session expired. Please login again.");
+    //   navigate("/robot/login");
+    //   return;
+    // }
 
     const today = new Date();
     const returnDate = new Date();
