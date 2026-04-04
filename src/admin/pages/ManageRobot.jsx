@@ -39,7 +39,7 @@ const ManageRobot = () => {
     const fetchAllRobots = async () => {
         try {
             const res = await axios.get("https://librioo-backend-production.up.railway.app/api/robots/all");
-            setRobots(res.data.robots);
+            setRobots(res.data);
         } catch (err) {
             console.error("Error fetching robots:", err);
         }
@@ -313,11 +313,11 @@ const ManageRobot = () => {
                                     <div className="p-4 font-bold text-center text-gray-800 border-r border-gray-200">Model</div>
                                     <div className="p-4 font-bold text-center text-gray-800">Status</div>
                                 </div>
-                                {(robots || []).map((r) => (
+                                {robots.map((r) => (
                                     <div key={r.robotID} className="grid grid-cols-4 border-b border-gray-100">
                                         <div className="p-4 text-center text-gray-600 border-r border-gray-200">{r.robotID}</div>
                                         <div className="p-4 text-center text-gray-600 border-r border-gray-200">{r.robotName}</div>
-                                        <div className="p-4 text-center text-gray-600 border-r border-gray-200">{r.model}</div>
+                                        <div className="p-4 text-center text-gray-600 border-r border-gray-200">{r.robotModel}</div>
                                         <div className="p-4 text-center text-gray-600">{r.status}</div>
                                     </div>
                                 ))}
