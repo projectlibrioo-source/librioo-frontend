@@ -1,6 +1,7 @@
 import React from "react";
-import { useNavigate } from "react-router-dom"; 
-import RobotLayout from "../layouts/RobotLayout"; 
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import RobotLayout from "../layouts/RobotLayout";
 import robotLeft from "../../assets/pixverse-image-effect-prompt-give-me-three-pic-removebg-preview-1-1.png";
 import robotRight from "../../assets/pixverse-image-effect-prompt-give-me-three-pic-removebg-preview-1-2.png";
 
@@ -8,11 +9,16 @@ const EndingPage = () => {
   const navigate = useNavigate();
 
   const handleHomeClick = () => {
-    navigate("/"); 
+    navigate("/");
   };
 
-  const handleEndSessionClick = () => {
-    navigate("/robot/login"); 
+  const handleEndSessionClick = async () => {
+    try {
+      await axios.post("https://librioo-backend-production.up.railway.app/api/robot/back");
+      navigate("/robot/login");
+    } catch (err) {
+      console.error("Failed to send return command:", err);
+    }
   };
 
   return (
@@ -40,10 +46,10 @@ const EndingPage = () => {
         <div className="absolute top-[-10%] right-[-10%] w-[clamp(250px,40vw,500px)] h-[clamp(250px,40vw,500px)] bg-cyan-400/20 blur-[120px] rounded-full z-0 pointer-events-none animate-pulse"></div>
         <div className="absolute bottom-[-10%] left-[-10%] w-[clamp(200px,30vw,400px)] h-[clamp(200px,30vw,400px)] bg-[#ff7421]/15 blur-[120px] rounded-full z-0 pointer-events-none animate-pulse" style={{ animationDelay: '2s' }}></div>
 
-        {/* --- CENTERED CONTENT WRAPPER (Now a Flex Row to enforce gaps!) --- */}
+        {/* CENTERED CONTENT WRAPPER */}
         <div className="relative w-full max-w-[1600px] flex flex-row items-center justify-center gap-2 sm:gap-6 lg:gap-12 px-2 md:px-8">
 
-          {/* LEFT ROBOT (No longer absolute. Forced to sit on the left with a gap) */}
+          {/* LEFT ROBOT */}
           <div className="flex justify-end z-0 w-[80px] sm:w-[150px] md:w-[220px] lg:w-[320px] shrink-0 opacity-40 animate-safe-float pointer-events-none">
             <img
               className="w-full h-auto scale-125 max-h-[45vh] object-contain drop-shadow-2xl"
@@ -52,14 +58,14 @@ const EndingPage = () => {
             />
           </div>
 
-          {/* --- GLASSMORPHIC CONTENT CARD (z-10) --- */}
+          {/* GLASSMORPHIC CONTENT CARD */}
           <div className="z-10 flex flex-col items-center bg-black/40 backdrop-blur-xl border border-white/10 p-6 sm:p-8 md:p-12 lg:p-16 rounded-[40px] shadow-[0_0_50px_rgba(0,0,0,0.6)] w-full max-w-[90%] md:max-w-[600px] lg:max-w-[800px] text-center shrink">
-            
+
             {/* Text Group */}
             <div className="flex flex-col items-center gap-4 mb-8 lg:gap-8 lg:mb-12">
               <h1 className="
-                [font-family:'ADLaM_Display-Regular',Helvetica] 
-                text-[#03fcba] 
+                [font-family:'ADLaM_Display-Regular',Helvetica]
+                text-[#03fcba]
                 text-[clamp(26px,3.5vw,55px)]
                 leading-tight
                 drop-shadow-[0_0_20px_rgba(3,252,186,0.4)]
@@ -68,8 +74,8 @@ const EndingPage = () => {
               </h1>
 
               <p className="
-                [font-family:'Aldrich',sans-serif] 
-                text-[#fcfbfa] 
+                [font-family:'Aldrich',sans-serif]
+                text-[#fcfbfa]
                 text-[clamp(16px,2vw,32px)]
                 leading-normal
                 opacity-95
@@ -78,7 +84,7 @@ const EndingPage = () => {
               </p>
 
               <p className="
-                [font-family:'ADLaM_Display-Regular',Helvetica] 
+                [font-family:'ADLaM_Display-Regular',Helvetica]
                 text-[#caf9ff]
                 text-[clamp(14px,1.5vw,24px)]
                 leading-relaxed
@@ -89,24 +95,24 @@ const EndingPage = () => {
               </p>
             </div>
 
-            {/* --- BUTTONS SECTION --- */}
+            {/* BUTTONS SECTION */}
             <div className="flex flex-col sm:flex-row gap-5 lg:gap-[40px] w-full justify-center items-center">
-              
+
               {/* Button 1: Return to Home */}
               <button
                 onClick={handleHomeClick}
                 className="
                   group w-full sm:w-[180px] lg:w-[240px] h-[55px] lg:h-[65px]
-                  flex items-center justify-center 
-                  bg-[#03fcba] rounded-[20px] 
-                  shadow-[0_0_20px_rgba(3,252,186,0.3)] 
+                  flex items-center justify-center
+                  bg-[#03fcba] rounded-[20px]
+                  shadow-[0_0_20px_rgba(3,252,186,0.3)]
                   cursor-pointer transition-all duration-300 ease-out
                   hover:scale-105 hover:bg-[#04ffbc] hover:shadow-[0_0_30px_rgba(3,252,186,0.6)]
                   focus:outline-none focus:ring-4 focus:ring-white/50
                 "
               >
                 <span className="
-                  text-[#111212] font-['Orbitron',sans-serif] 
+                  text-[#111212] font-['Orbitron',sans-serif]
                   text-[14px] lg:text-[18px] font-bold tracking-widest whitespace-nowrap
                 ">
                   RETURN HOME
@@ -118,16 +124,16 @@ const EndingPage = () => {
                 onClick={handleEndSessionClick}
                 className="
                   group w-full sm:w-[180px] lg:w-[240px] h-[55px] lg:h-[65px]
-                  flex items-center justify-center 
-                  bg-[#ff7421] rounded-[20px] 
-                  shadow-[0_0_20px_rgba(255,116,33,0.3)] 
+                  flex items-center justify-center
+                  bg-[#ff7421] rounded-[20px]
+                  shadow-[0_0_20px_rgba(255,116,33,0.3)]
                   cursor-pointer transition-all duration-300 ease-out
                   hover:scale-105 hover:bg-[#ff853a] hover:shadow-[0_0_30px_rgba(255,116,33,0.6)]
                   focus:outline-none focus:ring-4 focus:ring-white/50
                 "
               >
                 <span className="
-                  text-[#111212] font-['Orbitron',sans-serif] 
+                  text-[#111212] font-['Orbitron',sans-serif]
                   text-[14px] lg:text-[18px] font-bold tracking-widest whitespace-nowrap
                 ">
                   END SESSION
@@ -137,7 +143,7 @@ const EndingPage = () => {
             </div>
           </div>
 
-          {/* RIGHT ROBOT (Forced to sit on the right with a gap) */}
+          {/* RIGHT ROBOT */}
           <div className="flex justify-start z-0 w-[80px] sm:w-[150px] md:w-[220px] lg:w-[320px] shrink-0 opacity-40 animate-safe-float-delayed pointer-events-none">
             <img
               className="w-full h-auto scale-125 max-h-[45vh] object-contain drop-shadow-2xl"
