@@ -1,7 +1,25 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { ref, onValue } from "firebase/database";
+import { db } from "../../admin/firebase";
 import RobotLayout from "../layouts/RobotLayout";
 
 const FollowPage = () => {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    // Listen to Firebase Realtime Database for robot status
+    const statusRef = ref(db, "/robot/status");
+    const unsubscribe = onValue(statusRef, (snapshot) => {
+      const status = snapshot.val();
+      if (status === "ARRIVED") {
+        navigate("/robot/selection");
+      }
+    });
+
+    return () => unsubscribe(); // Cleanup subscription on unmount
+  }, [navigate]);
+
   return (
     <RobotLayout>
       <div className="flex-1 min-h-[80vh] w-full relative flex flex-col items-center justify-center p-4 overflow-hidden">
