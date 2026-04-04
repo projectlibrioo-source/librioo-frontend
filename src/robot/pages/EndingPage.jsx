@@ -36,9 +36,9 @@ const EndingPage = () => {
       {/* MAIN CONTAINER */}
       <div className="flex-1 min-h-[80vh] w-full relative flex flex-col items-center justify-center overflow-hidden p-4">
 
-        {/* --- HOLOGRAPHIC BACKGROUND ORBS --- */}
-        <div className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-cyan-400/20 blur-[120px] rounded-full z-0 pointer-events-none animate-pulse"></div>
-        <div className="absolute bottom-[-10%] right-[-10%] w-[400px] h-[400px] bg-[#03fcba]/15 blur-[120px] rounded-full z-0 pointer-events-none animate-pulse" style={{ animationDelay: '2s' }}></div>
+        {/* Holographic background orbs */}
+        <div className="absolute top-[-10%] right-[-10%] w-[clamp(250px,40vw,500px)] h-[clamp(250px,40vw,500px)] bg-cyan-400/20 blur-[120px] rounded-full z-0 pointer-events-none animate-pulse"></div>
+        <div className="absolute bottom-[-10%] left-[-10%] w-[clamp(200px,30vw,400px)] h-[clamp(200px,30vw,400px)] bg-[#ff7421]/15 blur-[120px] rounded-full z-0 pointer-events-none animate-pulse" style={{ animationDelay: '2s' }}></div>
 
         {/* --- CENTERED CONTENT WRAPPER (Now a Flex Row to enforce gaps!) --- */}
         <div className="relative w-full max-w-[1600px] flex flex-row items-center justify-center gap-2 sm:gap-6 lg:gap-12 px-2 md:px-8">
@@ -74,7 +74,7 @@ const EndingPage = () => {
                 leading-normal
                 opacity-95
               ">
-                Thank you for using our Library Assistance.
+                Thank you for using our Library Assistant.
               </p>
 
               <p className="

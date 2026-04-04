@@ -8,24 +8,23 @@ export default function LoginPage() {
 
   return(
     <RobotLayout>
-
-      <div className="h-full w-full flex flex-col lg:flex-row items-center justify-center px-6 lg:px-[100px] gap-10 lg:gap-20 flex-1">
+      <div className="h-full w-full flex flex-col lg:flex-row items-center justify-center px-[clamp(1.5rem,5vw,6rem)] gap-6 lg:gap-[clamp(2.5rem,5vw,5rem)] flex-1">
         
         {/* LEFT COLUMN: Welcome Text & Actions */}
         <div className="z-10 flex flex-col w-full max-w-2xl lg:w-1/2">
           
           {/* Typography Section */}
-          <div className="mb-10">
+          <div className="mb-[clamp(1.5rem,4vh,2.5rem)]">
             <h1 
-              className="mb-4 text-5xl font-bold text-white lg:text-7xl drop-shadow-lg"
+              className="mb-4 font-bold text-white text-[clamp(2.5rem,5vw,4.5rem)] leading-tight drop-shadow-lg"
               style={{ fontFamily: "'ADLaM_Display-Regular', Helvetica" }}
             >
-              Welcome to <br />
+              Welcome to <br className="hidden lg:block" />
               {/* React Bits tip: You could wrap this span in a <ShinyText> component here */}
               <span className="text-[#e0f7fa]">The Library</span>
             </h1>
-            <p className="text-xl font-light lg:text-2xl text-white/90 drop-shadow-sm">
-              Your Librioo library assistant is ready to help. <br/>
+            <p className="font-light text-white/90 drop-shadow-sm text-[clamp(1.125rem,2.5vw,1.5rem)]">
+              Your Librioo library assistant is ready to help. <br className="hidden md:block" />
               Please select how you'd like to proceed.
             </p>
           </div>
@@ -42,12 +41,12 @@ export default function LoginPage() {
               <span className="absolute inset-0 bg-gradient-to-r from-[#ff7421] via-[#ffaa77] to-[#ff7421] rounded-2xl opacity-80 group-hover:opacity-100 transition-opacity duration-300"></span>
               
               {/* Inner button surface */}
-              <div className="relative flex items-center justify-between px-6 py-5 transition-colors duration-300 border bg-white/20 backdrop-blur-xl border-white/30 rounded-2xl group-hover:bg-white/30">
-                <span className="text-2xl font-bold tracking-wide text-white shadow-black drop-shadow-md">
+              <div className="relative flex items-center justify-between px-6 py-4 md:py-5 transition-colors duration-300 border bg-white/20 backdrop-blur-xl border-white/30 rounded-2xl group-hover:bg-white/30 min-h-[clamp(65px,8vh,80px)]">
+                <span className="font-bold tracking-wide text-white shadow-black drop-shadow-md text-[clamp(1.2rem,2.5vw,1.5rem)]">
 
                   Member Login
                 </span>
-                <span className="text-2xl text-white transition-transform duration-300 transform group-hover:translate-x-2">
+                <span className="text-white transition-transform duration-300 transform group-hover:translate-x-2 text-[clamp(1.2rem,2.5vw,1.5rem)]">
                   ➜
                 </span>
               </div>
@@ -58,11 +57,11 @@ export default function LoginPage() {
               onClick={() => navigate("/robot/guest-login")}
               className="relative w-full transition-all duration-300 group rounded-2xl hover:-translate-y-1 focus:outline-none"
             >
-              <div className="relative flex items-center justify-between px-6 py-5 transition-colors duration-300 border-2 bg-black/10 backdrop-blur-md border-white/40 rounded-2xl group-hover:bg-white/20 group-hover:border-white/70">
-                <span className="text-2xl font-bold tracking-wide text-white drop-shadow-md">
+              <div className="relative flex items-center justify-between px-6 py-4 md:py-5 transition-colors duration-300 border-2 bg-black/10 backdrop-blur-md border-white/40 rounded-2xl group-hover:bg-white/20 group-hover:border-white/70 min-h-[clamp(65px,8vh,80px)]">
+                <span className="font-bold tracking-wide text-white drop-shadow-md text-[clamp(1.2rem,2.5vw,1.5rem)]">
                   Guest Access
                 </span>
-                <span className="text-2xl text-white transition-transform duration-300 transform group-hover:translate-x-2">
+                <span className="text-white transition-transform duration-300 transform group-hover:translate-x-2 text-[clamp(1.2rem,2.5vw,1.5rem)]">
                   ➜
                 </span>
               </div>
@@ -71,10 +70,9 @@ export default function LoginPage() {
           </div>
         </div>
 
-             {/* RIGHT COLUMN: Robot Image */}
-        <div className="relative items-end justify-center hidden w-full h-full lg:flex lg:w-1/2">
+        <div className="relative items-center justify-center hidden w-full h-full lg:flex lg:w-1/2">
           {/* Holographic glowing orb behind the robot */}
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] bg-cyan-100/30 blur-[100px] rounded-full z-0"></div>
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[clamp(250px,35vw,400px)] h-[clamp(250px,35vw,400px)] bg-cyan-100/30 blur-[100px] rounded-full z-0"></div>
           
           <img
             src={robotImage}

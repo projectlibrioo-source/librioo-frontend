@@ -83,7 +83,7 @@ const SearchBook = () => {
       <div className="h-full flex flex-col px-[20px] md:px-[65px] pb-[clamp(12px,2vh,24px)] overflow-hidden relative">
         
         {/* Holographic glowing background orb */}
-        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-cyan-400/10 blur-[120px] rounded-full z-0 pointer-events-none"></div>
+        <div className="absolute top-0 right-0 w-[clamp(250px,40vw,500px)] h-[clamp(250px,40vw,500px)] bg-cyan-400/10 blur-[120px] rounded-full z-0 pointer-events-none"></div>
 
         <h1 className="z-10 flex-shrink-0 ml-[80px] mb-[clamp(8px,1.5vh,16px)] [font-family:'ADLaM_Display-Regular',Helvetica] font-normal text-[#caf9ff] text-[clamp(20px,3.5vh,40px)] leading-tight drop-shadow-lg">
           Search Book By <span className="text-white">Name</span>
@@ -94,8 +94,8 @@ const SearchBook = () => {
           <div className="w-full h-full overflow-y-auto custom-scrollbar pl-[40px] pr-6 pt-[clamp(15px,2.5vh,30px)]">
             
             {/* Search and buttons */}
-            <div className="flex flex-row items-start w-full gap-[clamp(30px,5vw,60px)]">
-              <div className="ml-[40px] flex-1 max-w-[630px] min-w-0 mt-2"> 
+            <div className="flex flex-col lg:flex-row items-center lg:items-start w-full gap-6 lg:gap-[clamp(30px,5vw,60px)] pr-4 lg:pr-0">
+              <div className="w-full ml-0 lg:ml-[40px] flex-1 max-w-[630px] min-w-0 lg:mt-2"> 
                 <SearchBar
                   query={searchQuery}
                   onChange={handleSearchChange}
@@ -105,7 +105,7 @@ const SearchBook = () => {
                 />
               </div>
 
-              <div className="mr-[40px] w-[clamp(180px,20vw,240px)] flex-shrink-0 flex flex-col gap-4 mt-2">
+              <div className="w-full lg:w-[clamp(180px,20vw,240px)] mr-0 lg:mr-[40px] flex-shrink-0 flex flex-row lg:flex-col gap-4 lg:mt-2">
                 <CancelButton className="w-full" />
                 <GuideButton 
                     // Disabled if no book is selected OR location is checking
