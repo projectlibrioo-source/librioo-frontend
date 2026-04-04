@@ -465,13 +465,12 @@ const ManageUsers = () => {
                                         <label className="pr-4 text-sm font-medium text-gray-900 sm:text-right pt-2">User Type</label>
                                         <div className="flex flex-col space-y-3 sm:col-span-2">
                                             <div className="flex space-x-3">
-                                                {['Student', 'Lecturer', 'Staff'].map((type) => (
+                                                {['Student', 'Lecturer', 'Staff', 'Other'].map((type) => (
                                                     <button
                                                         key={type}
                                                         type="button"
                                                         onClick={() => {
                                                             setAddForm(prev => ({ ...prev, userType: type }));
-                                                            setExtraDetails({ studentId: '', course: '', department: '', designation: '' });
                                                         }}
                                                         className={`px-4 py-2 rounded-full text-sm font-medium border transition ${
                                                             addForm.userType === type
