@@ -39,7 +39,7 @@ const ManageRobot = () => {
     const fetchAllRobots = async () => {
         try {
             const res = await axios.get("https://librioo-backend-production.up.railway.app/api/robots/all");
-            setRobots(res.data);
+            setRobots(res.data.robots);
         } catch (err) {
             console.error("Error fetching robots:", err);
         }
