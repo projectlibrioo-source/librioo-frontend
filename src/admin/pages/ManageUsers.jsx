@@ -84,8 +84,8 @@ const ManageUsers = () => {
                         NICNumber: addForm.nicNumber,
                         status: addForm.userType,
 
-                        studentId: extraDetails.studentId,
-                        course: extraDetails.course,
+                        
+            
                         department: extraDetails.department,
                         designation: extraDetails.designation
                     }
@@ -484,8 +484,8 @@ const ManageUsers = () => {
                 <input
                     type="radio"
                     name="userType"
-                    checked={addForm.userType === 'Student'}
-                    onChange={() => setAddForm(prev => ({ ...prev, userType: 'Student' }))} // 🔴 CHANGED
+                    checked={addForm.userType === 'Other'}
+                    onChange={() => setAddForm(prev => ({ ...prev, userType: 'Other' }))} // 🔴 CHANGED
                 />
                 <span>Student</span>
             </label>
@@ -511,27 +511,6 @@ const ManageUsers = () => {
             </label>
         </div>
 
-        {/*  DYNAMIC FIELDS */}
-
-        {addForm.userType === 'Student' && (
-            <>
-                <input
-                    type="text"
-                    placeholder="Student ID"
-                    value={extraDetails.studentId}
-                    onChange={(e) => handleExtraChange('studentId', e.target.value)}
-                    className="px-3 py-2 bg-gray-100 rounded-md"
-                />
-
-                <input
-                    type="text"
-                    placeholder="Course"
-                    value={extraDetails.course}
-                    onChange={(e) => handleExtraChange('course', e.target.value)}
-                    className="px-3 py-2 bg-gray-100 rounded-md"
-                />
-            </>
-        )}
 
         {addForm.userType === 'Lecturer' && (
             <input
