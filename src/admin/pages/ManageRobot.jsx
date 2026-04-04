@@ -317,7 +317,7 @@ const ManageRobot = () => {
                                     <div key={r.robotID} className="grid grid-cols-4 border-b border-gray-100">
                                         <div className="p-4 text-center text-gray-600 border-r border-gray-200">{r.robotID}</div>
                                         <div className="p-4 text-center text-gray-600 border-r border-gray-200">{r.robotName}</div>
-                                        <div className="p-4 text-center text-gray-600 border-r border-gray-200">{r.robotModel}</div>
+                                        <div className="p-4 text-center text-gray-600 border-r border-gray-200">{r.model}</div>
                                         <div className="p-4 text-center text-gray-600">{r.status}</div>
                                     </div>
                                 ))}
