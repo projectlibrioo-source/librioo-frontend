@@ -7,6 +7,8 @@ const ManageUsers = () => {
     const [userRole, setUserRole] = useState('MEMBER');
 
     const [addForm, setAddForm] = useState({
+
+        
         id: '',
         fullname: '',
         address: '',
@@ -18,6 +20,13 @@ const ManageUsers = () => {
         nicNumber: '',
         userType: 'Student'
     });
+
+    const [extraDetails, setExtraDetails] = useState({
+    studentId: '',
+    course: '',
+    department: '',
+    designation: ''
+});
 
     const [searchId, setSearchId] = useState('');
     const [updateForm, setUpdateForm] = useState({
@@ -73,7 +82,12 @@ const ManageUsers = () => {
                         phoneNumber: addForm.phoneNumber,
                         age: parseInt(addForm.age, 10),
                         NICNumber: addForm.nicNumber,
-                        status: addForm.userType
+                        status: addForm.userType,
+
+                        studentId: extraDetails.studentId,
+                        course: extraDetails.course,
+                        department: extraDetails.department,
+                        designation: extraDetails.designation
                     }
                     : {
                         guestID: parseInt(addForm.id, 10),
@@ -102,6 +116,16 @@ const ManageUsers = () => {
                 nicNumber: '',
                 userType: 'Student'
             });
+
+
+            setExtraDetails({
+                studentId: '',
+                course: '',
+                department: '',
+                designation: ''
+            });
+
+
         } catch (err) {
             console.error('Add user error:', err);
             alert(err.response?.data || 'Failed to add user');
@@ -301,6 +325,14 @@ const ManageUsers = () => {
         }
     };
 
+
+    const handleExtraChange = (field, value) => {
+    setExtraDetails(prev => ({
+        ...prev,
+        [field]: value
+    }));
+};
+
     return (
         <AdminLayout>
             <div className="min-h-full p-8 space-y-12 font-sans bg-gray-50">
@@ -442,40 +474,87 @@ const ManageUsers = () => {
                                 </div>
                                 {userRole === 'MEMBER' && (
                                     <div className="grid items-center grid-cols-1 gap-4 sm:grid-cols-3">
-                                        <label className="pr-4 text-sm font-medium text-gray-900 sm:text-right">User Type</label>
-                                        <div className="flex space-x-6 sm:col-span-2">
-                                            <label className="flex items-center space-x-2">
-                                                <input
-                                                    type="radio"
-                                                    name="userType"
-                                                    className="text-blue-600 border-gray-300 focus:ring-blue-500"
-                                                    checked={addForm.userType === 'Student'}
-                                                    onChange={() => handleAddChange('userType', 'Student')}
-                                                />
-                                                <span className="text-sm text-gray-700">Student</span>
-                                            </label>
-                                            <label className="flex items-center space-x-2">
-                                                <input
-                                                    type="radio"
-                                                    name="userType"
-                                                    className="text-blue-600 border-gray-300 focus:ring-blue-500"
-                                                    checked={addForm.userType === 'Lecturer'}
-                                                    onChange={() => handleAddChange('userType', 'Lecturer')}
-                                                />
-                                                <span className="text-sm text-gray-700">Lecturer</span>
-                                            </label>
-                                            <label className="flex items-center space-x-2">
-                                                <input
-                                                    type="radio"
-                                                    name="userType"
-                                                    className="text-blue-600 border-gray-300 focus:ring-blue-500"
-                                                    checked={addForm.userType === 'Staff'}
-                                                    onChange={() => handleAddChange('userType', 'Staff')}
-                                                />
-                                                <span className="text-sm text-gray-700">Staff</span>
-                                            </label>
-                                        </div>
-                                    </div>
+    <label className="pr-4 text-sm font-medium text-gray-900 sm:text-right">User Type</label>
+
+    <div className="flex flex-col space-y-4 sm:col-span-2">
+
+        {/*  RADIO BUTTONS */}
+        <div className="flex space-x-6">
+            <label className="flex items-center space-x-2">
+                <input
+                    type="radio"
+                    name="userType"
+                    checked={addForm.userType === 'Student'}
+                    onChange={() => setAddForm(prev => ({ ...prev, userType: 'Student' }))} // 🔴 CHANGED
+                />
+                <span>Student</span>
+            </label>
+
+            <label className="flex items-center space-x-2">
+                <input
+                    type="radio"
+                    name="userType"
+                    checked={addForm.userType === 'Lecturer'}
+                    onChange={() => setAddForm(prev => ({ ...prev, userType: 'Lecturer' }))} // 🔴 CHANGED
+                />
+                <span>Lecturer</span>
+            </label>
+
+            <label className="flex items-center space-x-2">
+                <input
+                    type="radio"
+                    name="userType"
+                    checked={addForm.userType === 'Staff'}
+                    onChange={() => setAddForm(prev => ({ ...prev, userType: 'Staff' }))} // 🔴 CHANGED
+                />
+                <span>Staff</span>
+            </label>
+        </div>
+
+        {/*  DYNAMIC FIELDS */}
+
+        {addForm.userType === 'Student' && (
+            <>
+                <input
+                    type="text"
+                    placeholder="Student ID"
+                    value={extraDetails.studentId}
+                    onChange={(e) => handleExtraChange('studentId', e.target.value)}
+                    className="px-3 py-2 bg-gray-100 rounded-md"
+                />
+
+                <input
+                    type="text"
+                    placeholder="Course"
+                    value={extraDetails.course}
+                    onChange={(e) => handleExtraChange('course', e.target.value)}
+                    className="px-3 py-2 bg-gray-100 rounded-md"
+                />
+            </>
+        )}
+
+        {addForm.userType === 'Lecturer' && (
+            <input
+                type="text"
+                placeholder="Department"
+                value={extraDetails.department}
+                onChange={(e) => handleExtraChange('department', e.target.value)}
+                className="px-3 py-2 bg-gray-100 rounded-md"
+            />
+        )}
+
+        {addForm.userType === 'Staff' && (
+            <input
+                type="text"
+                placeholder="Designation"
+                value={extraDetails.designation}
+                onChange={(e) => handleExtraChange('designation', e.target.value)}
+                className="px-3 py-2 bg-gray-100 rounded-md"
+            />
+        )}
+
+    </div>
+</div>
                                 )}
                                 <div className="flex justify-end pt-4 border-t">
                                     <button type="submit" className="px-6 py-2 bg-blue-600 text-white rounded font-medium hover:bg-blue-700 transition">
