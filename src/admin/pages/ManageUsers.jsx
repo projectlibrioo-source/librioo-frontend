@@ -7,8 +7,6 @@ const ManageUsers = () => {
     const [userRole, setUserRole] = useState('MEMBER');
 
     const [addForm, setAddForm] = useState({
-
-        
         id: '',
         fullname: '',
         address: '',
@@ -22,11 +20,11 @@ const ManageUsers = () => {
     });
 
     const [extraDetails, setExtraDetails] = useState({
-    studentId: '',
-    course: '',
-    department: '',
-    designation: ''
-});
+        studentId: '',
+        course: '',
+        department: '',
+        designation: ''
+    });
 
     const [searchId, setSearchId] = useState('');
     const [updateForm, setUpdateForm] = useState({
@@ -83,9 +81,6 @@ const ManageUsers = () => {
                         age: parseInt(addForm.age, 10),
                         NICNumber: addForm.nicNumber,
                         status: addForm.userType,
-
-                        
-            
                         department: extraDetails.department,
                         designation: extraDetails.designation
                     }
@@ -103,7 +98,6 @@ const ManageUsers = () => {
             console.log('Response:', response.data);
             alert(`${userRole === 'MEMBER' ? 'Member' : 'Guest'} added successfully`);
 
-            // Reset form
             setAddForm({
                 id: '',
                 fullname: '',
@@ -117,14 +111,12 @@ const ManageUsers = () => {
                 userType: 'Student'
             });
 
-
             setExtraDetails({
                 studentId: '',
                 course: '',
                 department: '',
                 designation: ''
             });
-
 
         } catch (err) {
             console.error('Add user error:', err);
@@ -147,7 +139,6 @@ const ManageUsers = () => {
 
         setShowUpdateConfirm(false);
 
-        // Try Member first
         try {
             const memberRes = await axios.get('https://librioo-backend-production.up.railway.app/api/getallmembers', {
                 params: { memberid: parsedId }
@@ -170,7 +161,6 @@ const ManageUsers = () => {
             // If not found as member, try guest
         }
 
-        // Try Guest
         try {
             const guestRes = await axios.get('https://librioo-backend-production.up.railway.app/api/getallguests', {
                 params: { guestid: parsedId }
@@ -249,7 +239,6 @@ const ManageUsers = () => {
             return;
         }
 
-        // Try Member first
         try {
             const memberRes = await axios.get('https://librioo-backend-production.up.railway.app/api/getallmembers', {
                 params: { memberid: parsedId }
@@ -267,7 +256,6 @@ const ManageUsers = () => {
             // Try guest next
         }
 
-        // Try Guest
         try {
             const guestRes = await axios.get('https://librioo-backend-production.up.railway.app/api/getallguests', {
                 params: { guestid: parsedId }
@@ -316,7 +304,6 @@ const ManageUsers = () => {
             console.log('Delete response:', response.data);
             alert(response.data || 'User deleted successfully');
 
-            // Reset state
             setDeleteUser(null);
             setDeleteSearchId('');
         } catch (err) {
@@ -325,13 +312,12 @@ const ManageUsers = () => {
         }
     };
 
-
     const handleExtraChange = (field, value) => {
-    setExtraDetails(prev => ({
-        ...prev,
-        [field]: value
-    }));
-};
+        setExtraDetails(prev => ({
+            ...prev,
+            [field]: value
+        }));
+    };
 
     return (
         <AdminLayout>
@@ -472,69 +458,35 @@ const ManageUsers = () => {
                                         className="block w-full px-3 py-2 bg-gray-100 border-none rounded-md sm:col-span-2 focus:ring-1 focus:ring-blue-500"
                                     />
                                 </div>
+
+                                {/* ✅ AMENDED: User Type Section */}
                                 {userRole === 'MEMBER' && (
-                                    <div className="grid items-center grid-cols-1 gap-4 sm:grid-cols-3">
-    <label className="pr-4 text-sm font-medium text-gray-900 sm:text-right">User Type</label>
-
-    <div className="flex flex-col space-y-4 sm:col-span-2">
-
-        {/*  RADIO BUTTONS */}
-        <div className="flex space-x-6">
-            <label className="flex items-center space-x-2">
-                <input
-                    type="radio"
-                    name="userType"
-                    checked={addForm.userType === 'Other'}
-                    onChange={() => setAddForm(prev => ({ ...prev, userType: 'Other' }))} // 🔴 CHANGED
-                />
-                <span>Student</span>
-            </label>
-
-            <label className="flex items-center space-x-2">
-                <input
-                    type="radio"
-                    name="userType"
-                    checked={addForm.userType === 'Lecturer'}
-                    onChange={() => setAddForm(prev => ({ ...prev, userType: 'Lecturer' }))} // 🔴 CHANGED
-                />
-                <span>Lecturer</span>
-            </label>
-
-            <label className="flex items-center space-x-2">
-                <input
-                    type="radio"
-                    name="userType"
-                    checked={addForm.userType === 'Staff'}
-                    onChange={() => setAddForm(prev => ({ ...prev, userType: 'Staff' }))} // 🔴 CHANGED
-                />
-                <span>Staff</span>
-            </label>
-        </div>
-
-
-        {addForm.userType === 'Lecturer' && (
-            <input
-                type="text"
-                placeholder="Department"
-                value={extraDetails.department}
-                onChange={(e) => handleExtraChange('department', e.target.value)}
-                className="px-3 py-2 bg-gray-100 rounded-md"
-            />
-        )}
-
-        {addForm.userType === 'Staff' && (
-            <input
-                type="text"
-                placeholder="Designation"
-                value={extraDetails.designation}
-                onChange={(e) => handleExtraChange('designation', e.target.value)}
-                className="px-3 py-2 bg-gray-100 rounded-md"
-            />
-        )}
-
-    </div>
-</div>
+                                    <div className="grid items-start grid-cols-1 gap-4 sm:grid-cols-3">
+                                        <label className="pr-4 text-sm font-medium text-gray-900 sm:text-right pt-2">User Type</label>
+                                        <div className="flex flex-col space-y-3 sm:col-span-2">
+                                            <div className="flex space-x-3">
+                                                {['Student', 'Lecturer', 'Staff'].map((type) => (
+                                                    <button
+                                                        key={type}
+                                                        type="button"
+                                                        onClick={() => {
+                                                            setAddForm(prev => ({ ...prev, userType: type }));
+                                                            setExtraDetails({ studentId: '', course: '', department: '', designation: '' });
+                                                        }}
+                                                        className={`px-4 py-2 rounded-full text-sm font-medium border transition ${
+                                                            addForm.userType === type
+                                                                ? 'bg-blue-600 text-white border-blue-600'
+                                                                : 'bg-white text-gray-600 border-gray-300 hover:border-blue-400 hover:text-blue-500'
+                                                        }`}
+                                                    >
+                                                        {type}
+                                                    </button>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    </div>
                                 )}
+
                                 <div className="flex justify-end pt-4 border-t">
                                     <button type="submit" className="px-6 py-2 bg-blue-600 text-white rounded font-medium hover:bg-blue-700 transition">
                                         Save User
@@ -575,7 +527,6 @@ const ManageUsers = () => {
                                     </div>
                                 </div>
 
-                                {/* Confirmation Popup */}
                                 {showUpdateConfirm && (
                                     <div className="p-4 bg-green-50 border-l-4 border-green-500 rounded">
                                         <div className="flex items-center">
@@ -651,11 +602,11 @@ const ManageUsers = () => {
                                     </div>
                                 </div>
                                 <div className="flex justify-end pt-4 border-t">
-                                    <button 
+                                    <button
                                         type="submit"
                                         className={`px-6 py-2 text-white rounded font-medium transition ${
-                                            showUpdateConfirm 
-                                                ? 'bg-blue-600 hover:bg-blue-700' 
+                                            showUpdateConfirm
+                                                ? 'bg-blue-600 hover:bg-blue-700'
                                                 : 'bg-gray-400 cursor-not-allowed'
                                         }`}
                                         disabled={!showUpdateConfirm}
@@ -730,11 +681,11 @@ const ManageUsers = () => {
                                     </div>
                                 </div>
                                 <div className="flex justify-end pt-4 border-t">
-                                    <button 
+                                    <button
                                         type="submit"
                                         className={`px-6 py-2 text-white rounded font-medium transition ${
-                                            deleteUser 
-                                                ? 'bg-red-600 hover:bg-red-700' 
+                                            deleteUser
+                                                ? 'bg-red-600 hover:bg-red-700'
                                                 : 'bg-gray-400 cursor-not-allowed'
                                         }`}
                                         disabled={!deleteUser}
