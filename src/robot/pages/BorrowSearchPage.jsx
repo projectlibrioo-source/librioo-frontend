@@ -4,10 +4,21 @@ import RobotLayout from "../layouts/RobotLayout";
 import SearchBar from "../components/SearchBar";
 import BookCard from "../components/BookCard";
 import { searchBooksByName } from "../../BackendFunctions";
+import axios from "axios";
+
 
 const TIMEOUT_SECONDS = 60;
 
 const BorrowSearchPage = () => {
+
+
+const BASE_URL = "http://localhost:8080";
+
+const borrowBook = async (transactionData) => {
+  const response = await axios.post(`${BASE_URL}/borrowrobot`, transactionData);
+  return response.data;
+};
+
   const [searchQuery, setSearchQuery] = useState("");
   const [bookData, setBookData] = useState([]);
   const [selectedBook, setSelectedBook] = useState(null);
@@ -58,20 +69,63 @@ const BorrowSearchPage = () => {
     }
   };
 
-  const handleBookClick = (book) => {
-    setSelectedBook(book);
-    resetTimeout();
-  };
+const handleBookClick = (book) => {
+  setSelectedBook(book);
+  resetTimeout();
+};
 
-  // --- BORROW: book is already selected from search, go straight to EndingPage ---
-  const handleBorrow = () => {
-    if (!selectedBook) {
-      alert("Please select a book first!");
+
+
+
+
+
+
+// ✅ ADD THIS FUNCTION HERE
+const handleBorrow = async () => {
+  if (!selectedBook) {
+    alert("Please select a book first!");
+    return;
+  }
+
+  try {
+    const libraryId = localStorage.getItem("libraryId");
+
+    if (!libraryId) {
+      alert("Session expired. Please login again.");
+      navigate("/robot/login");
       return;
     }
-    // TODO: call borrow API here with selectedBook.id / selectedBook.title + user session data
+
+    const today = new Date();
+    const returnDate = new Date();
+    returnDate.setDate(today.getDate() + 14);
+
+    const transaction = {
+      libraryId: Number(libraryId),
+      bookId: localStorage.getItem("bookId"),
+      borrowDate: today.toISOString().split("T")[0],
+      returnDate: returnDate.toISOString().split("T")[0],
+      category: "BOOK",
+      status: "BORROWED",
+    };
+
+    await borrowBook(transaction);
+
     navigate("/robot/ending");
-  };
+
+  } catch (error) {
+    console.error(error);
+    alert("Borrow failed!");
+  }
+};
+
+
+
+
+
+
+
+
 
   // --- Cancel: end session ---
   const handleCancel = () => {
