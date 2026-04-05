@@ -19,7 +19,8 @@ const Users = () => {
                     email: user.email || 'N/A',
                     phone: user.phoneNumber || 'N/A',
                     status: user.status || 'N/A',
-                    type: user.userType || 'Member',
+                    role: user.role || 'Member',
+                    type: user.userType || 'N/A',
                     booksBorrowed: user.booksBorrowed ?? 0
                 }));
 
@@ -62,7 +63,7 @@ const Users = () => {
                         <table className="min-w-full divide-y divide-gray-200">
                             <thead className="bg-blue-50/50">
                                 <tr>
-                                    {['User ID', 'Username', 'Email', 'Phone', 'Status', 'Membership Type', 'Books Borrowed'].map((header) => (
+                                    {['User ID', 'Username', 'System Role', 'Occupation', 'Email', 'Phone', 'Status', 'Books Borrowed'].map((header) => (
                                         <th
                                             key={header}
                                             scope="col"
@@ -92,6 +93,12 @@ const Users = () => {
                                             {user.username}
                                         </td>
                                         <td className="px-6 py-4 text-sm font-bold text-gray-900 border-r border-gray-200 whitespace-nowrap">
+                                            {user.role}
+                                        </td>
+                                        <td className="px-6 py-4 text-sm font-bold text-gray-900 border-r border-gray-200 whitespace-nowrap">
+                                            {user.type}
+                                        </td>
+                                        <td className="px-6 py-4 text-sm font-bold text-gray-900 border-r border-gray-200 whitespace-nowrap">
                                             {user.email}
                                         </td>
                                         <td className="px-6 py-4 text-sm font-bold text-gray-900 border-r border-gray-200 whitespace-nowrap">
@@ -102,11 +109,8 @@ const Users = () => {
                                                 {user.status}
                                             </span>
                                         </td>
-                                        <td className="px-6 py-4 text-sm font-bold text-gray-900 border-r border-gray-200 whitespace-nowrap">
-                                            {user.type}
-                                        </td>
                                         <td className="px-6 py-4 text-sm font-bold text-gray-900 whitespace-nowrap">
-                                            {user.type === 'Guest' ? 'N/A' : user.booksBorrowed}
+                                            {user.role === 'Guest' ? 'N/A' : user.booksBorrowed}
                                         </td>
                                     </tr>
                                 )))}
