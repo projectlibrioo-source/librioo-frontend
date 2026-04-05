@@ -19,7 +19,7 @@ const FollowPage = () => {
       setRobotStatus(status);
       if (status === "ARRIVED") {
         console.log("✅ Navigating to selection...");
-        navigate("/robot/selection", { state: { user: userDataRef.current } });
+        navigate("/selection", { state: { user: userDataRef.current } });
       }
     });
     return () => unsubscribe();
