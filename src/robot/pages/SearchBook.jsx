@@ -61,13 +61,13 @@ const SearchBook = () => {
     console.log("Guiding to book:", targetBookName);
 
     try {
-      // ✅ 1. Reset Firebase status to IDLE first
+      // 1. Reset Firebase status to IDLE first
       await set(ref(db, "/robot/status"), "IDLE");
 
-      // ✅ 2. Send navigate command to robot
+      // 2. Send navigate command to robot
       await navigateByBookName(targetBookName);
 
-      // ✅ 3. Navigate to FollowPage with clean status
+      // 3. Navigate to FollowPage with clean status
       navigate("/robot/follow", { state: { user: userData } });
     } catch (error) {
       console.error("Error sending command:", error);
