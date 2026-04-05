@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { ref, onValue } from 'firebase/database';
+import { db } from '../firebase';
 import { Search } from 'lucide-react';
 import AdminLayout from '../layouts/AdminLayout';
 
@@ -17,31 +19,29 @@ const RobotStatus = () => {
         try {
             setLoading(true);
             const res = await axios.get('https://librioo-backend-production.up.railway.app/api/robots/all');
-            
-            // Map the database robot entity to the UI expectation
-            // Since physical telemetry (battery, shelf) doesn't exist in MySQL, 
-            // we generate plausible mock data to maintain the UI's demonstration value.
+
             const mappedRobots = (res.data || []).map(r => {
-                // Generate deterministic fake battery based on ID so it doesn't flicker wildly
-                const pseudoBattery = 40 + ((r.robotID * 17) % 60); 
+                // Battery: not tracked in hardware yet — deterministic estimate
+                const pseudoBattery = 40 + ((r.robotID * 17) % 60);
                 const pseudoRemainingH = Math.floor(pseudoBattery / 15);
-                
+
                 return {
                     id: r.robotID,
                     name: r.robotName || `Robot ${r.robotID}`,
                     status: r.status || 'Offline',
-                    
-                    // Hardware Mock Telemetry
-                    currentUser: r.status === 'ACTIVE' ? 'Auto-Patrol' : 'None',
-                    userId: '-',
                     lastActive: r.startDate ? r.startDate.split('T')[0] : 'Unknown',
-                    currentShelf: `Shelf ${String.fromCharCode(65 + (r.robotID % 5))}${pseudoRemainingH + 1}`,
+                    // These 3 start as defaults; Firebase listener below will override them
+                    currentUser: 'N/A',
+                    userId: '-',
+                    currentShelf: '-',
+                    currentTask: 'Idle',
+                    // Deterministic battery estimate (no physical telemetry in system)
                     battery: pseudoBattery,
-                    remaining: `${pseudoRemainingH}h ${(pseudoBattery % 15) * 4}min`,
+                    remaining: `~${pseudoRemainingH}h`,
                     image: `https://api.dicebear.com/7.x/bottts/svg?seed=${r.robotName || r.robotID}&backgroundColor=b6e3f4`
                 };
             });
-            
+
             setRobots(mappedRobots);
         } catch (error) {
             console.error('Failed to fetch robots', error);
@@ -49,6 +49,24 @@ const RobotStatus = () => {
             setLoading(false);
         }
     };
+
+    // Firebase real-time listener — overlays live status/shelf/task on top of MySQL data
+    useEffect(() => {
+        const robotRef = ref(db, 'robot');
+        const unsubscribe = onValue(robotRef, (snapshot) => {
+            const data = snapshot.val();
+            if (!data) return;
+            setRobots(prev => prev.map(robot => ({
+                ...robot,
+                status: data.status || robot.status,
+                currentShelf: data.targetShelf ? `Shelf ${data.targetShelf}` : '-',
+                currentTask: data.currentCommand && data.currentCommand !== 'none'
+                    ? data.currentCommand
+                    : (data.status === 'MOVING' ? 'Navigating' : 'Idle'),
+            })));
+        });
+        return () => unsubscribe();
+    }, []);
 
     const filteredRobots = robots.filter(robot => {
         if (!searchTerm) return true;
@@ -122,6 +140,10 @@ const RobotStatus = () => {
                                     <div className="flex items-center justify-between">
                                         <span className="text-gray-600 font-medium">Last Active:</span>
                                         <span>{robot.lastActive}</span>
+                                    </div>
+                                    <div className="flex items-center justify-between">
+                                        <span className="text-gray-600 font-medium">Current Task:</span>
+                                        <span>{robot.currentTask || 'Idle'}</span>
                                     </div>
                                     <div className="flex items-center justify-between">
                                         <span className="text-gray-600 font-medium">Current Shelf:</span>

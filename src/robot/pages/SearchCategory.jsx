@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import RobotLayout from "../layouts/RobotLayout";
 import SearchBar from "../components/SearchBar";
 import BookCard from "../components/BookCard";
@@ -9,6 +9,8 @@ import { getCategories, navigateByCategory } from "../../BackendFunctions";
 
 const SearchCategory = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const userData = location.state?.user || {};
   const [searchQuery, setSearchQuery] = useState("");
   const [categories, setCategories] = useState([]); 
   const [selectedCategory, setSelectedCategory] = useState(null);
@@ -58,7 +60,7 @@ const SearchCategory = () => {
     try {
       const success = await navigateByCategory(selectedCategory);
       if (success) {
-        navigate("/robot/follow"); 
+        navigate("/robot/follow", { state: { user: userData } }); 
       } 
     } catch (error) {
       console.error("Error sending command:", error);

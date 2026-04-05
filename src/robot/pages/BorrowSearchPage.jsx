@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import RobotLayout from "../layouts/RobotLayout";
 import SearchBar from "../components/SearchBar";
 import BookCard from "../components/BookCard";
-import { searchBooksByName } from "../../BackendFunctions";
+import { searchBooksByName, borrowBookWithRobot } from "../../BackendFunctions";
 
 const TIMEOUT_SECONDS = 60;
 
@@ -12,9 +12,12 @@ const BorrowSearchPage = () => {
   const [bookData, setBookData] = useState([]);
   const [selectedBook, setSelectedBook] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [isBorrowing, setIsBorrowing] = useState(false);
   const [timeoutId, setTimeoutId] = useState(null);
 
   const navigate = useNavigate();
+  const location = useLocation();
+  const userData = location.state?.user || {};
 
   // --- Session timeout: reset on any user interaction ---
   const resetTimeout = useCallback(() => {
@@ -63,14 +66,43 @@ const BorrowSearchPage = () => {
     resetTimeout();
   };
 
-  // --- BORROW: book is already selected from search, go straight to EndingPage ---
-  const handleBorrow = () => {
+  // --- BORROW: call the API then go to EndingPage ---
+  const handleBorrow = async () => {
     if (!selectedBook) {
       alert("Please select a book first!");
       return;
     }
-    // TODO: call borrow API here with selectedBook.id / selectedBook.title + user session data
-    navigate("/robot/ending");
+
+    const libraryId = userData.id || userData.libraryID || userData.libraryId;
+    const bookId = selectedBook.bookId || selectedBook.id;
+    const category = userData.category || selectedBook.category || "Standard";
+
+    if (!libraryId || !bookId) {
+      alert("Missing user or book information. Cannot process borrow.");
+      console.error("Missing data — libraryId:", libraryId, "bookId:", bookId);
+      return;
+    }
+
+    setIsBorrowing(true);
+    try {
+      const result = await borrowBookWithRobot(libraryId, bookId, category);
+
+      if (result?.error === "NOT_ELIGIBLE") {
+        alert("You are not eligible to borrow: you may have reached your loan limit or have overdue books.");
+        return;
+      } else if (result?.error) {
+        alert("Failed to record borrow: " + result.message);
+        return;
+      }
+
+      // Success — navigate to ending
+      navigate("/robot/ending");
+    } catch (e) {
+      console.error("Borrow error:", e);
+      alert("An unexpected error occurred. Please try again.");
+    } finally {
+      setIsBorrowing(false);
+    }
   };
 
   // --- Cancel: end session ---
@@ -135,11 +167,11 @@ const BorrowSearchPage = () => {
                   id="borrow-search-borrow-btn"
                   type="button"
                   onClick={handleBorrow}
-                  disabled={!selectedBook}
+                  disabled={!selectedBook || isBorrowing}
                   className={`
                     relative group rounded-2xl p-[2px] overflow-hidden transition-transform
                     focus:outline-none flex-1 min-h-[50px] md:min-h-[66px]
-                    ${!selectedBook
+                    ${!selectedBook || isBorrowing
                       ? "opacity-50 cursor-not-allowed grayscale"
                       : "hover:scale-[1.02]"
                     }
@@ -151,7 +183,7 @@ const BorrowSearchPage = () => {
                       className="text-[clamp(14px,1.6vh,20px)] text-white font-bold tracking-wide drop-shadow-md whitespace-nowrap"
                       style={{ fontFamily: "'Aldrich', sans-serif" }}
                     >
-                      BORROW
+                      {isBorrowing ? "BORROWING..." : "BORROW"}
                     </span>
                   </div>
                 </button>

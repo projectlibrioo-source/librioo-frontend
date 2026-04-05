@@ -1,11 +1,13 @@
 import React, { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { ref, onValue } from "firebase/database";
 import { db } from "../../admin/firebase";
 import RobotLayout from "../layouts/RobotLayout";
 
 const FollowPage = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const userData = location.state?.user || {};
 
   useEffect(() => {
     // Listen to Firebase Realtime Database for robot status
@@ -13,7 +15,7 @@ const FollowPage = () => {
     const unsubscribe = onValue(statusRef, (snapshot) => {
       const status = snapshot.val();
       if (status === "ARRIVED") {
-        navigate("/robot/selection");
+        navigate("/robot/selection", { state: { user: userData } });
       }
     });
 

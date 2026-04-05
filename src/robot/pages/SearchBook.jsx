@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import RobotLayout from "../layouts/RobotLayout";
 import SearchBar from "../components/SearchBar";
 import BookCard from "../components/BookCard";
@@ -16,6 +16,8 @@ const SearchBook = () => {
   const [isCheckingLocation, setIsCheckingLocation] = useState(false);
   
   const navigate = useNavigate();
+  const location = useLocation();
+  const userData = location.state?.user || {};
 
   // Reset selection if they start typing a new query
   const handleSearchChange = (e) => {
@@ -69,7 +71,7 @@ const SearchBook = () => {
 
     try {
       await navigateByBookName(targetBookName);
-      navigate("/robot/follow");
+      navigate("/robot/follow", { state: { user: userData } });
     } catch (error) {
       console.error("Error sending command:", error);
       alert("System Error: Could not connect to robot.");

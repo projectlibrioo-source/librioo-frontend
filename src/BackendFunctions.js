@@ -131,3 +131,39 @@ export async function navigateByCategory(category) {
         alert(e);
     }
 }
+
+//Borrow a book via the robot (creates a transaction record)
+export async function borrowBookWithRobot(libraryId, bookId, category) {
+    try {
+        const today = new Date();
+        const returnDate = new Date(today);
+        returnDate.setDate(returnDate.getDate() + 14); // 2-week loan period
+
+        const borrowRequest = {
+            libraryId: parseInt(libraryId),
+            bookId: parseInt(bookId),
+            borrowDate: today.toISOString().split('T')[0],
+            returnDate: returnDate.toISOString().split('T')[0],
+            category: category || "Standard",
+            status: "Borrowed",
+            borrowedThrough: "Robot"
+        };
+
+        const response = await fetch(`https://librioo-backend-production.up.railway.app/api/borrowrobot`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(borrowRequest)
+        });
+
+        if (response.ok) {
+            return await response.json();
+        } else if (response.status === 403) {
+            return { error: "NOT_ELIGIBLE", message: "Not eligible to borrow (loan limit reached or overdue books)" };
+        } else {
+            return { error: "SERVER_ERROR", message: "Server error: " + response.status };
+        }
+    } catch (e) {
+        console.error("Borrow API error:", e);
+        return { error: "NETWORK_ERROR", message: e.toString() };
+    }
+}
