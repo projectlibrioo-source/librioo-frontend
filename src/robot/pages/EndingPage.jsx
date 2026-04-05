@@ -1,6 +1,8 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { ref, set } from "firebase/database";
+import { db } from "../../admin/firebase";
 import RobotLayout from "../layouts/RobotLayout";
 import robotLeft from "../../assets/pixverse-image-effect-prompt-give-me-three-pic-removebg-preview-1-1.png";
 import robotRight from "../../assets/pixverse-image-effect-prompt-give-me-three-pic-removebg-preview-1-2.png";
@@ -14,16 +16,28 @@ const EndingPage = () => {
 
   const handleEndSessionClick = async () => {
     try {
+      // 1. Send robot back to home
       await axios.post("https://librioo-backend-production.up.railway.app/api/robot/back");
+
+      // 2. Reset Firebase robot node to default values
+      await set(ref(db, "/robot"), {
+        arrivedAtShelf: 0,
+        currentCommand: "none",
+        currentStep: 0,
+        path: [],
+        status: "IDLE",
+        targetShelf: 0,
+      });
+
+      // 3. Navigate to login
       navigate("/robot/login");
     } catch (err) {
-      console.error("Failed to send return command:", err);
+      console.error("Failed to end session:", err);
     }
   };
 
   return (
     <RobotLayout>
-      {/* Custom CSS for a safe, restricted floating animation. */}
       <style>
         {`
           @keyframes safeFloat {
@@ -39,14 +53,12 @@ const EndingPage = () => {
         `}
       </style>
 
-      {/* MAIN CONTAINER */}
       <div className="flex-1 min-h-[80vh] w-full relative flex flex-col items-center justify-center overflow-hidden p-4">
 
         {/* Holographic background orbs */}
         <div className="absolute top-[-10%] right-[-10%] w-[clamp(250px,40vw,500px)] h-[clamp(250px,40vw,500px)] bg-cyan-400/20 blur-[120px] rounded-full z-0 pointer-events-none animate-pulse"></div>
         <div className="absolute bottom-[-10%] left-[-10%] w-[clamp(200px,30vw,400px)] h-[clamp(200px,30vw,400px)] bg-[#ff7421]/15 blur-[120px] rounded-full z-0 pointer-events-none animate-pulse" style={{ animationDelay: '2s' }}></div>
 
-        {/* CENTERED CONTENT WRAPPER */}
         <div className="relative w-full max-w-[1600px] flex flex-row items-center justify-center gap-2 sm:gap-6 lg:gap-12 px-2 md:px-8">
 
           {/* LEFT ROBOT */}
@@ -95,10 +107,10 @@ const EndingPage = () => {
               </p>
             </div>
 
-            {/* BUTTONS SECTION */}
+            {/* BUTTONS */}
             <div className="flex flex-col sm:flex-row gap-5 lg:gap-[40px] w-full justify-center items-center">
 
-              {/* Button 1: Return to Home */}
+              {/* Return Home */}
               <button
                 onClick={handleHomeClick}
                 className="
@@ -111,15 +123,12 @@ const EndingPage = () => {
                   focus:outline-none focus:ring-4 focus:ring-white/50
                 "
               >
-                <span className="
-                  text-[#111212] font-['Orbitron',sans-serif]
-                  text-[14px] lg:text-[18px] font-bold tracking-widest whitespace-nowrap
-                ">
+                <span className="text-[#111212] font-['Orbitron',sans-serif] text-[14px] lg:text-[18px] font-bold tracking-widest whitespace-nowrap">
                   RETURN HOME
                 </span>
               </button>
 
-              {/* Button 2: End Session */}
+              {/* End Session */}
               <button
                 onClick={handleEndSessionClick}
                 className="
@@ -132,10 +141,7 @@ const EndingPage = () => {
                   focus:outline-none focus:ring-4 focus:ring-white/50
                 "
               >
-                <span className="
-                  text-[#111212] font-['Orbitron',sans-serif]
-                  text-[14px] lg:text-[18px] font-bold tracking-widest whitespace-nowrap
-                ">
+                <span className="text-[#111212] font-['Orbitron',sans-serif] text-[14px] lg:text-[18px] font-bold tracking-widest whitespace-nowrap">
                   END SESSION
                 </span>
               </button>
