@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { ref, onValue } from "firebase/database";
 import { db } from "../../admin/firebase";
@@ -8,19 +8,22 @@ const FollowPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const userData = location.state?.user || {};
+  const userDataRef = useRef(userData); // ✅ stable ref, won't trigger re-renders
   const [robotStatus, setRobotStatus] = useState(null);
 
   useEffect(() => {
     const statusRef = ref(db, "/robot/status");
     const unsubscribe = onValue(statusRef, (snapshot) => {
       const status = snapshot.val();
+      console.log("🔥 Firebase status:", status);
       setRobotStatus(status);
-      if (status && status === "ARRIVED") {
-        navigate("/robot/selection", { state: { user: userData } });
+      if (status === "ARRIVED") {
+        console.log("✅ Navigating to selection...");
+        navigate("/robot/selection", { state: { user: userDataRef.current } });
       }
     });
     return () => unsubscribe();
-  }, [navigate, userData]);
+  }, [navigate]); // ✅ no userData here, use ref instead
 
   return (
     <RobotLayout>
@@ -64,7 +67,7 @@ const FollowPage = () => {
             FOLLOW ME
           </h1>
 
-          {/* Dynamic subtitle based on robot status */}
+          {/* Dynamic subtitle */}
           <p
             className="mt-6 text-[#caf9ff] text-sm md:text-xl tracking-widest uppercase opacity-80 font-bold animate-pulse"
             style={{ fontFamily: "'Aldrich', sans-serif" }}
