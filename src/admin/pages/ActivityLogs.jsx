@@ -51,7 +51,7 @@ const ActivityLogs = () => {
     const [activeFilter, setActiveFilter] = useState('all');
     const [searchQuery, setSearchQuery] = useState('');
 
-    // ✅ Real-time listener from Firestore
+    // Real-time listener from Firestore
     useEffect(() => {
         const q = query(collection(firestore, 'activityLogs'), orderBy('timestamp', 'desc'));
         const unsubscribe = onSnapshot(q, (snapshot) => {

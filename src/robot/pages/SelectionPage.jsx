@@ -1,10 +1,12 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import RobotLayout from "../layouts/RobotLayout";
 import robotImage from "../../assets/pixverse-image-effect-prompt-give-me-three-pic-removebg-preview-1-2.png";
 
 const SelectionPage = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const userData = location.state?.user || {};
   
   // 1. ADD STATE TO TRACK SELECTION
   const [selectedOption, setSelectedOption] = useState(null);
@@ -21,7 +23,7 @@ const SelectionPage = () => {
   // 3. PROCEED → always go to ConfirmSelectionPage first, passing the intent as state
   const handleProceedClick = () => {
     if (selectedOption) {
-      navigate("/robot/confirm-selection", { state: { intent: selectedOption } });
+      navigate("/robot/confirm-selection", { state: { intent: selectedOption, user: userData } });
     }
   };
 

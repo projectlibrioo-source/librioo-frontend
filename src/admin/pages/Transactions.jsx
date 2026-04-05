@@ -13,19 +13,20 @@ const Transactions = () => {
     useEffect(() => {
         const fetchTransactions = async () => {
             try {
-                const response = await axios.get('https://librioo-backend-production.up.railway.app/api/transactions');
+                // Use enriched endpoint — returns member name + book title resolved server-side
+                const response = await axios.get('https://librioo-backend-production.up.railway.app/api/transactions/enriched');
                 const data = response.data;
                 const formatted = data.map(tx => ({
-                    id: tx.transactionId || tx.id || 'N/A',
-                    username: tx.member?.fullName || tx.guest?.fullName || `User ${tx.libraryId || tx.guestID}`,
-                    userId: tx.libraryId || tx.guestId || 'N/A',
-                    bookId: tx.bookId || tx.book?.bookID || 'N/A',
-                    bookTitle: tx.book?.bookTitle || `Book ${tx.bookId}`,
+                    id: tx.transactionId || 'N/A',
+                    username: tx.memberName || `User ${tx.libraryId}`,
+                    userId: tx.libraryId || 'N/A',
+                    bookId: tx.bookId || 'N/A',
+                    bookTitle: tx.bookTitle || `Book ${tx.bookId}`,
                     type: tx.returnDate ? 'Return' : 'Borrow',
                     date: tx.borrowDate || 'N/A',
                     returnDate: tx.returnDate || 'N/A',
-                    status: tx.status || (tx.returnDate ? 'Completed' : 'Pending'),
-                    borrowedThrough: tx.borrowedThrough || 'Robot (R-001)'
+                    status: tx.status || 'N/A',
+                    borrowedThrough: tx.borrowedThrough || 'Counter'
                 }));
                 setTransactions(formatted);
             } catch (error) {
@@ -39,19 +40,21 @@ const Transactions = () => {
     }, []);
 
     const chartCounts = useMemo(() => {
-        let borrowed = 0, returned = 0, overdue = 0, active = 0;
+        let borrowed = 0, returned = 0, overdue = 0, pending = 0;
+        const today = new Date();
         transactions.forEach(tx => {
-            if (tx.status === 'Completed' || tx.type === 'Return') returned++;
-            else if (tx.status === 'Overdue') overdue++;
-            else if (tx.status === 'Active' || tx.status === 'Pending') active++;
-            borrowed++; // Total borrowed since this is what the transaction mostly is
+            const status = (tx.status || '').toLowerCase();
+            const returnDate = tx.returnDate ? new Date(tx.returnDate) : null;
+            if (status === 'returned' || status === 'completed') returned++;
+            else if (returnDate && returnDate < today && status === 'borrowed') overdue++;
+            else if (status === 'borrowed') borrowed++;
+            else pending++;
         });
-        // Avoid all zeros in pie chart layout
-        return [borrowed, returned, overdue, active];
+        return [borrowed, returned, overdue, pending];
     }, [transactions]);
 
     const chartData = {
-        labels: ['Borrowed', 'Returned', 'Over Due', 'Active'],
+        labels: ['Borrowed', 'Returned', 'Overdue', 'Other'],
         datasets: [
             {
                 data: chartCounts.some(v => v > 0) ? chartCounts : [1, 1, 1, 1], // fallback if empty

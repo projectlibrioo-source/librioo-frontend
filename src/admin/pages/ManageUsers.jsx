@@ -129,7 +129,8 @@ const ManageUsers = () => {
                         phoneNumber: addForm.phoneNumber,
                         age: parseInt(addForm.age, 10),
                         NICNumber: addForm.nicNumber,
-                        status: addForm.userType,
+                        status: 'ACTIVE',
+                        userType: addForm.userType,
                         department: extraDetails.department,
                         designation: extraDetails.designation
                     }

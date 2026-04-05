@@ -10,19 +10,20 @@ const Users = () => {
     useEffect(() => {
         const fetchUsers = async () => {
             try {
-                // Fetch from a general users endpoint
-                const response = await axios.get('https://librioo-backend-production.up.railway.app/api/users');
-                
+                // Use enriched endpoint — includes booksBorrowed count from Transactions
+                const response = await axios.get('https://librioo-backend-production.up.railway.app/api/users/enriched');
+
                 const formattedUsers = response.data.map(user => ({
-                    id: user.libraryID || user.guestID || user.id || 'N/A',
-                    username: user.fullName || user.username || 'Unknown',
+                    id: user.id || 'N/A',
+                    username: user.fullName || 'Unknown',
                     email: user.email || 'N/A',
-                    joined: user.joinedDate || 'N/A',
-                    lastLogin: user.lastLogin || 'N/A',
-                    type: user.userType || user.role || (user.libraryID ? 'Member' : 'Guest'),
-                    booksBorrowed: user.booksBorrowed || 0
+                    phone: user.phoneNumber || 'N/A',
+                    status: user.status || 'N/A',
+                    role: user.role || 'Member',
+                    type: user.userType || 'N/A',
+                    booksBorrowed: user.booksBorrowed ?? 0
                 }));
-                
+
                 setUsers(formattedUsers);
             } catch (error) {
                 console.error("Error fetching users:", error);
@@ -62,7 +63,7 @@ const Users = () => {
                         <table className="min-w-full divide-y divide-gray-200">
                             <thead className="bg-blue-50/50">
                                 <tr>
-                                    {['User ID', 'Username', 'Email', 'Joined Date', 'Last Login', 'Membership Type', 'No of Books Borrowed'].map((header) => (
+                                    {['User ID', 'Username', 'System Role', 'Occupation', 'Email', 'Phone', 'Status', 'Books Borrowed'].map((header) => (
                                         <th
                                             key={header}
                                             scope="col"
@@ -92,19 +93,24 @@ const Users = () => {
                                             {user.username}
                                         </td>
                                         <td className="px-6 py-4 text-sm font-bold text-gray-900 border-r border-gray-200 whitespace-nowrap">
-                                            {user.email}
-                                        </td>
-                                        <td className="px-6 py-4 text-sm font-bold text-gray-900 border-r border-gray-200 whitespace-nowrap">
-                                            {user.joined}
-                                        </td>
-                                        <td className="px-6 py-4 text-sm font-bold text-gray-900 border-r border-gray-200 whitespace-nowrap">
-                                            {user.lastLogin}
+                                            {user.role}
                                         </td>
                                         <td className="px-6 py-4 text-sm font-bold text-gray-900 border-r border-gray-200 whitespace-nowrap">
                                             {user.type}
                                         </td>
+                                        <td className="px-6 py-4 text-sm font-bold text-gray-900 border-r border-gray-200 whitespace-nowrap">
+                                            {user.email}
+                                        </td>
+                                        <td className="px-6 py-4 text-sm font-bold text-gray-900 border-r border-gray-200 whitespace-nowrap">
+                                            {user.phone}
+                                        </td>
+                                        <td className="px-6 py-4 text-sm font-bold text-gray-900 border-r border-gray-200 whitespace-nowrap">
+                                            <span className={`px-2 py-1 rounded-full text-xs ${user.status === 'ACTIVE' || user.status === 'Active' ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-600'}`}>
+                                                {user.status}
+                                            </span>
+                                        </td>
                                         <td className="px-6 py-4 text-sm font-bold text-gray-900 whitespace-nowrap">
-                                            {user.booksBorrowed}
+                                            {user.role === 'Guest' ? 'N/A' : user.booksBorrowed}
                                         </td>
                                     </tr>
                                 )))}

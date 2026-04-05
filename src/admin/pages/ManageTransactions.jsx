@@ -106,7 +106,8 @@ const ManageTransactions = () => {
             borrowDate: borrowData.borrowDate,
             returnDate: borrowData.returnDate,
             category: borrowData.patronType,
-            status: "Pending" // Will be updated to match DB convention if needed
+            status: "Borrowed",        // Must match DB convention
+            borrowedThrough: "Counter" // Tag as counter borrow for reporting
         };
 
         try {
