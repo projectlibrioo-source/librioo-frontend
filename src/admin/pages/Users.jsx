@@ -106,7 +106,7 @@ const Users = () => {
                                             {user.type}
                                         </td>
                                         <td className="px-6 py-4 text-sm font-bold text-gray-900 whitespace-nowrap">
-                                            {user.booksBorrowed}
+                                            {user.type === 'Guest' ? 'N/A' : user.booksBorrowed}
                                         </td>
                                     </tr>
                                 )))}
