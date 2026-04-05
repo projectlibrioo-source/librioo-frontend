@@ -8,22 +8,37 @@ const FollowPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const userData = location.state?.user || {};
-  const userDataRef = useRef(userData); // ✅ stable ref, won't trigger re-renders
+  const userDataRef = useRef(userData);
   const [robotStatus, setRobotStatus] = useState(null);
+  const isFirstLoad = useRef(true); // ✅ track first snapshot
 
   useEffect(() => {
     const statusRef = ref(db, "/robot/status");
     const unsubscribe = onValue(statusRef, (snapshot) => {
       const status = snapshot.val();
-      console.log("🔥 Firebase status:", status);
+      console.log("🔥 Firebase status:", status, "| isFirstLoad:", isFirstLoad.current);
+
+      // ✅ Skip the very first snapshot to avoid acting on stale ARRIVED status
+      if (isFirstLoad.current) {
+        isFirstLoad.current = false;
+
+        // If already ARRIVED on mount, it's stale — ignore it
+        if (status === "ARRIVED") {
+          console.log("⚠️ Skipping stale ARRIVED status on mount");
+          return;
+        }
+      }
+
       setRobotStatus(status);
+
       if (status === "ARRIVED") {
-        console.log("✅ Navigating to selection...");
-        navigate("/selection", { state: { user: userDataRef.current } });
+        console.log("✅ Navigating to /robot/selection...");
+        navigate("/robot/selection", { state: { user: userDataRef.current } });
       }
     });
+
     return () => unsubscribe();
-  }, [navigate]); // ✅ no userData here, use ref instead
+  }, [navigate]);
 
   return (
     <RobotLayout>
