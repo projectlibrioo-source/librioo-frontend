@@ -60,17 +60,17 @@ const ManageTransactions = () => {
             // Ignore 404, try Guest below
         }
 
-        try {
-            // Try Guest
-            const res = await axios.get(`https://librioo-backend-production.up.railway.app/api/getallguests?guestid=${parsedId}`);
-            if (res.data) {
-                setBorrowData(prev => ({ ...prev, userId: parsedId, patronType: 'Guest', userName: res.data.fullName }));
-                return;
-            }
-        } catch (err) {
-            alert('User not found!');
-            setBorrowData(prev => ({ ...prev, userId: '', patronType: '', userName: '' }));
-        }
+        // try {
+        //     // Try Guest
+        //     const res = await axios.get(`https://librioo-backend-production.up.railway.app/api/getallguests?guestid=${parsedId}`);
+        //     if (res.data) {
+        //         setBorrowData(prev => ({ ...prev, userId: parsedId, patronType: 'Guest', userName: res.data.fullName }));
+        //         return;
+        //     }
+        // } catch (err) {
+        //     alert('User not found!');
+        //     setBorrowData(prev => ({ ...prev, userId: '', patronType: '', userName: '' }));
+        // }
     };
 
     const handleVerifyBookBorrow = async (e) => {
