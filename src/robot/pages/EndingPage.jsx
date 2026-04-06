@@ -64,7 +64,7 @@ const EndingPage = () => {
           {/* LEFT ROBOT */}
           <div className="flex justify-end z-0 w-[80px] sm:w-[150px] md:w-[220px] lg:w-[320px] shrink-0 opacity-40 animate-safe-float pointer-events-none">
             <img
-              className="w-full h-auto scale-125 max-h-[45vh] object-contain drop-shadow-2xl"
+              className="w-full h-auto scale-110 max-h-[45vh] object-contain drop-shadow-2xl"
               alt="Robot Left"
               src={robotLeft}
             />
@@ -152,7 +152,7 @@ const EndingPage = () => {
           {/* RIGHT ROBOT */}
           <div className="flex justify-start z-0 w-[80px] sm:w-[150px] md:w-[220px] lg:w-[320px] shrink-0 opacity-40 animate-safe-float-delayed pointer-events-none">
             <img
-              className="w-full h-auto scale-125 max-h-[45vh] object-contain drop-shadow-2xl"
+              className="w-full h-auto scale-110 max-h-[45vh] object-contain drop-shadow-2xl"
               alt="Robot Right"
               src={robotRight}
             />

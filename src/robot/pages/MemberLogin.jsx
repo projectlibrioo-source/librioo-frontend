@@ -37,7 +37,7 @@ const MemberLogin = () => {
 
   return (
     <RobotLayout>
-      <div className="h-full w-full flex flex-col lg:flex-row items-center justify-center px-[clamp(1.5rem,5vw,6rem)] gap-6 lg:gap-[clamp(2.5rem,5vw,5rem)] flex-1">
+      <div className="min-h-full w-full flex flex-col lg:flex-row items-center justify-center px-[clamp(1.5rem,5vw,6rem)] gap-6 lg:gap-[clamp(2.5rem,5vw,5rem)] flex-1">
         
         {/* LEFT COLUMN: Form & Text */}
         <div className="z-10 flex flex-col w-full max-w-2xl lg:w-1/2">

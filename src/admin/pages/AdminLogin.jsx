@@ -111,7 +111,7 @@ const AdminLogin = () => {
       </div>
 
       {/* Right section */}
-      <div className="flex-1 flex items-center justify-center px-6 py-10">
+      <div className="flex-1 flex items-center justify-center px-4 py-6 md:px-6 md:py-8">
         <div className="w-full max-w-[500px]">
           <div className="mb-8">
             <p className="text-sm font-medium uppercase tracking-[0.18em] text-[#9ca3af]">
@@ -135,8 +135,8 @@ const AdminLogin = () => {
               </div>
             </div>
 
-            <form onSubmit={handleSubmit} className="px-8 py-8">
-              <div className="space-y-6">
+            <form onSubmit={handleSubmit} className="px-6 py-6 sm:px-8 sm:py-8">
+              <div className="space-y-4 sm:space-y-6">
                 {error && (
                   <div className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-600">
                     {error}
@@ -151,7 +151,7 @@ const AdminLogin = () => {
                     type="text" value={adminId}
                     onChange={(e) => setAdminId(e.target.value)}
                     placeholder="Enter your email" disabled={loading}
-                    className="h-[54px] w-full rounded-xl border border-[#e5e7eb] bg-[#f9fafb] px-4 text-sm text-[#111827] placeholder:text-[#9ca3af] focus:border-[#60a5fa] focus:bg-white focus:ring-2 focus:ring-[#dbeafe] disabled:opacity-50"
+                    className="h-[48px] sm:h-[54px] w-full rounded-xl border border-[#e5e7eb] bg-[#f9fafb] px-4 text-sm text-[#111827] placeholder:text-[#9ca3af] focus:border-[#60a5fa] focus:bg-white focus:ring-2 focus:ring-[#dbeafe] disabled:opacity-50"
                   />
                 </div>
 
@@ -163,7 +163,7 @@ const AdminLogin = () => {
                     type="password" value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="Enter your password" disabled={loading}
-                    className="h-[54px] w-full rounded-xl border border-[#e5e7eb] bg-[#f9fafb] px-4 text-sm text-[#111827] placeholder:text-[#9ca3af] focus:border-[#60a5fa] focus:bg-white focus:ring-2 focus:ring-[#dbeafe] disabled:opacity-50"
+                    className="h-[48px] sm:h-[54px] w-full rounded-xl border border-[#e5e7eb] bg-[#f9fafb] px-4 text-sm text-[#111827] placeholder:text-[#9ca3af] focus:border-[#60a5fa] focus:bg-white focus:ring-2 focus:ring-[#dbeafe] disabled:opacity-50"
                   />
                 </div>
 
@@ -181,7 +181,7 @@ const AdminLogin = () => {
                 </div>
 
                 <button type="submit" disabled={loading}
-                  className="h-[54px] w-full rounded-xl bg-[#2563eb] text-sm font-semibold text-white transition hover:bg-[#1d4ed8] disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2">
+                  className="h-[48px] sm:h-[54px] w-full rounded-xl bg-[#2563eb] text-sm font-semibold text-white transition hover:bg-[#1d4ed8] disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2">
                   {loading ? (
                     <>
                       <svg className="animate-spin h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">

@@ -8,7 +8,7 @@ export default function LoginPage() {
 
   return(
     <RobotLayout>
-      <div className="h-full w-full flex flex-col lg:flex-row items-center justify-center px-[clamp(1.5rem,5vw,6rem)] gap-6 lg:gap-[clamp(2.5rem,5vw,5rem)] flex-1">
+      <div className="min-h-full w-full flex flex-col lg:flex-row items-center justify-center px-[clamp(1.5rem,5vw,6rem)] gap-6 lg:gap-[clamp(2.5rem,5vw,5rem)] flex-1">
         
         {/* LEFT COLUMN: Welcome Text & Actions */}
         <div className="z-10 flex flex-col w-full max-w-2xl lg:w-1/2">
@@ -77,7 +77,7 @@ export default function LoginPage() {
           <img
             src={robotImage}
             alt="Smart Library Assistant Robot"
-            className="relative z-10 scale-125 max-h-[85vh] object-contain drop-shadow-[0_20px_30px_rgba(0,0,0,0.3)] hover:scale-105 transition-transform duration-700 ease-out"
+            className="relative z-10 scale-110 lg:scale-[1.15] max-h-[60vh] lg:max-h-[70vh] object-contain drop-shadow-[0_20px_30px_rgba(0,0,0,0.3)] hover:scale-105 transition-transform duration-700 ease-out"
           />
 
 
